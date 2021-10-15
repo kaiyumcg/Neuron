@@ -1,0 +1,18 @@
+{
+    "name": "NeuronEditor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:d49732ad27b9244748d00c9a295b8535"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
