@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 namespace Neuron
 {
-    public class ActorAI : MonoBehaviour
+    public abstract class ActorAI : MonoBehaviour
     {
         [SerializeField] float tickInterval = 0.2f;
         [SerializeField] bool realtime = false;
@@ -19,17 +19,20 @@ namespace Neuron
         [SerializeField] [ViewOnly] AIOutput ai_output;
         ActorAI control;
         NavMeshAgent agent;
-        bool IsLocked, AI_Started;
-        public delegate void OnDoAIAnything();
-        public delegate bool AIPredicateDelegate();
-        public event OnDoAIAnything OnInitAIEv, OnTickAIEv;
-        public event OnAIStateChangeFunc OnUpdateAI;
+        bool IsLocked, AI_Started, areTasksValid;
+        
+        public event OnDoAIAnything onInit, onTick;
+        public event OnAIStateChangeFunc onStateChange;
         public NavMeshAgent Agent => agent;
         public virtual AIInput AIInput { get { return ai_input; } }
         public AIOutput AIOutput { get { return ai_output; } }
         public AIPredicateDelegate UnlockCondition;
 
-        public virtual void OnInitAI() { }
+        protected virtual void OnCleanup() { }
+        protected virtual void OnDebugDraw() { }
+        protected virtual void OnInit() { }
+        protected virtual void OnTick() { }
+        protected virtual void OnStateChange(AIOutput state) { }
 
         private void Awake()
         {
@@ -41,90 +44,38 @@ namespace Neuron
             AI_Started = false;
             ai_input = new AIInput();
             ai_output = new AIOutput();
-            if (description != null)
-            {
-                if (description.InputTasks != null && description.InputTasks.Count > 0)
-                {
-                    for (int i = 0; i < description.InputTasks.Count; i++)
-                    {
-                        var task = description.InputTasks[i];
-                        if (task == null) { continue; }
-                        task.OnInitAI(control);
-                    }
-                }
 
-                if (description.OutputTasks != null && description.OutputTasks.Count > 0)
-                {
-                    for (int i = 0; i < description.OutputTasks.Count; i++)
-                    {
-                        var task = description.OutputTasks[i];
-                        if (task == null) { continue; }
-                        task.OnInitAI(control);
-                    }
-                }
-            }
-            OnInitAIEv?.Invoke();
             AI_Started = true;
-            OnInitAI();
+            onInit?.Invoke();
+            OnInit();
+            areTasksValid = description != null && description.InputTask != null && description.OutputTask != null;
+            if (areTasksValid)
+            {
+                description.InputTask.OnInitAI(control);
+                description.OutputTask.OnInitAI(control);
+            }
         }
 
         private void OnDestroy()
         {
-            if (description != null)
-            {
-                if (description.InputTasks != null && description.InputTasks.Count > 0)
-                {
-                    for (int i = 0; i < description.InputTasks.Count; i++)
-                    {
-                        var task = description.InputTasks[i];
-                        if (task == null) { continue; }
-                        task.OnCleanupAI(control);
-                    }
-                }
-
-                if (description.OutputTasks != null && description.OutputTasks.Count > 0)
-                {
-                    for (int i = 0; i < description.OutputTasks.Count; i++)
-                    {
-                        var task = description.OutputTasks[i];
-                        if (task == null) { continue; }
-                        task.OnCleanupAI(control);
-                    }
-                }
-            }
+            OnCleanup();
+            if (!areTasksValid) { return; }
+            description.InputTask.OnCleanupAI(control);
+            description.OutputTask.OnCleanupAI(control);
         }
 
         private void OnDrawGizmos()
         {
             if (willDebug == false) { return; }
-
-            if (description != null)
-            {
-                if (description.InputTasks != null && description.InputTasks.Count > 0)
-                {
-                    for (int i = 0; i < description.InputTasks.Count; i++)
-                    {
-                        var task = description.InputTasks[i];
-                        if (task == null) { continue; }
-                        task.DrawDebug(transform);
-                    }
-                }
-
-                if (description.OutputTasks != null && description.OutputTasks.Count > 0)
-                {
-                    for (int i = 0; i < description.OutputTasks.Count; i++)
-                    {
-                        var task = description.OutputTasks[i];
-                        if (task == null) { continue; }
-                        task.DrawDebug(transform);
-                    }
-                }
-            }
+            OnDebugDraw();
+            if (!areTasksValid) { return; }
+            description.InputTask.DrawDebug(transform);
+            description.OutputTask.DrawDebug(transform);
         }
 
         private void Update()
         {
-            if (AI_Started == false || description == null) { return; }
+            if (AI_Started == false || !areTasksValid) { return; }
             timer += realtime ? Time.unscaledDeltaTime * timeScale : Time.deltaTime * timeScale;
             if (timer > tickInterval)
             {
@@ -147,28 +98,14 @@ namespace Neuron
 
                 if (IsLocked == false)
                 {
-                    if (description.InputTasks != null && description.InputTasks.Count > 0)
-                    {
-                        for (int i = 0; i < description.InputTasks.Count; i++)
-                        {
-                            var task = description.InputTasks[i];
-                            if (task == null) { continue; }
-                            task.GetAIInput();
-                        }
-                    }
-                    if (description.OutputTasks != null && description.OutputTasks.Count > 0)
-                    {
-                        for (int i = 0; i < description.OutputTasks.Count; i++)
-                        {
-                            var task = description.OutputTasks[i];
-                            if (task == null) { continue; }
-                            task.CalculateAIOutput();
-                        }
-                    }
+                    description.InputTask.GetAIInput();
+                    description.OutputTask.CalculateAIOutput();
                     IsLocked = true;
-                    OnUpdateAI?.Invoke(ai_output);
+                    onStateChange?.Invoke(ai_output);
+                    OnStateChange(ai_output);
                 }
-                OnTickAIEv?.Invoke();
+                onTick?.Invoke();
+                OnTick();
             }
         }
     }

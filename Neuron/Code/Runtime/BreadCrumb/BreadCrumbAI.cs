@@ -8,7 +8,7 @@ namespace Neuron
         public BreadCrumbAIInput BreadCrumbAIInput { get; private set; }
         public override AIInput AIInput => BreadCrumbAIInput;
 
-        public override void OnInitAI()
+        protected override void OnInit()
         {
             BreadCrumbAIInput = new BreadCrumbAIInput
             {
@@ -16,7 +16,7 @@ namespace Neuron
                 AllCrumbs = null,
                 NearCrumbs = null
             };
-            base.OnInitAI();
+            base.OnInit();
         }
     }
 }
