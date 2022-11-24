@@ -1,0 +1,16 @@
+{
+  "name": "com.kaiyum.neuron",
+  "author": "Md Al Kaiyum (Rumman)",
+  "displayName": "Neuron",
+  "version": "1.0.0",
+  "unity": "2018.3",
+  "description": "An AI library",
+  "category": "Unity",
+  "keywords": [
+    "AI"
+  ],
+  "dependencies": {
+	"com.kaiyum.unityext": "https://github.com/kaiyumcg/UnityExt.git",
+	"com.textus-games.serialized-reference-ui": "https://github.com/kaiyumcg/UnitySerializedReferenceUI.git"
+  }
+}

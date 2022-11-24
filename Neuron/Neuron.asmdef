@@ -2,7 +2,8 @@
     "name": "Neuron",
     "rootNamespace": "",
     "references": [
-        "GUID:73106583b323919458c1e05166706ce3"
+        "Textus.SerializeReferenceUI",
+        "UnityExt"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
