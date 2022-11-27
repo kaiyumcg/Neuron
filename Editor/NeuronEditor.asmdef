@@ -1,11 +1,12 @@
 {
-    "name": "Neuron",
+    "name": "NeuronEditor",
     "rootNamespace": "",
     "references": [
-        "Textus.SerializeReferenceUI",
-        "UnityExt"
+        "EditorUtil"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

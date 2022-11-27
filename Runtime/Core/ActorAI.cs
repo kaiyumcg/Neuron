@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using AttributeExt;
 
 namespace Neuron
 {
@@ -11,12 +12,12 @@ namespace Neuron
         [SerializeField] bool realtime = false;
         [SerializeField] AIDescription description;
         [SerializeField] bool willDebug = false;
-        [SerializeField] [ViewOnly] float timeScale = 1.0f;
+        [SerializeField] [CanNotEdit] float timeScale = 1.0f;
         public float TimeScale { get { return timeScale; } set { timeScale = value; } }
 
         float timer;
         AIInput ai_input;
-        [SerializeField] [ViewOnly] AIOutput ai_output;
+        [SerializeField] [CanNotEdit] AIOutput ai_output;
         ActorAI control;
         NavMeshAgent agent;
         bool IsLocked, AI_Started, areTasksValid;

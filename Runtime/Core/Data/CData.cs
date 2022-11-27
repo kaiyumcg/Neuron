@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AttributeExt;
 
 namespace Neuron
 {
@@ -35,9 +36,9 @@ namespace Neuron
     [System.Serializable]
     public class AIOutput
     {
-        [SerializeField] [ViewOnly] Transform target;
-        [SerializeField] [ViewOnly] Vector3 targetPoint;
-        [SerializeField] [ViewOnly] Vector3 targetDirection;
+        [SerializeField] [CanNotEdit] Transform target;
+        [SerializeField] [CanNotEdit] Vector3 targetPoint;
+        [SerializeField] [CanNotEdit] Vector3 targetDirection;
 
         public Transform Target { get { return target; } set { target = value; } }
         public Vector3 TargetPoint { get { return targetPoint; } set { targetPoint = value; } }
