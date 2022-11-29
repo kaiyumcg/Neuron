@@ -11,6 +11,7 @@
   ],
   "dependencies": {
     "com.kaiyum.unityext": "https://github.com/kaiyumcg/UnityExt.git",
+    "com.github.siccity.xnode": "https://github.com/siccity/xNode.git",
     "com.kaiyum.editorutil": "https://github.com/kaiyumcg/EditorUtil.git"
   }
 }

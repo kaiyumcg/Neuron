@@ -2,7 +2,8 @@
     "name": "NeuronEditor",
     "rootNamespace": "",
     "references": [
-        "EditorUtil"
+        "EditorUtil",
+        "XNodeEditor"
     ],
     "includePlatforms": [
         "Editor"

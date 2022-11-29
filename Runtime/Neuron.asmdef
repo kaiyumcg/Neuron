@@ -3,7 +3,8 @@
     "rootNamespace": "",
     "references": [
         "AttributeExt",
-        "UnityExt"
+        "UnityExt",
+        "XNode"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
