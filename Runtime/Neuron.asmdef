@@ -2,7 +2,7 @@
     "name": "Neuron",
     "rootNamespace": "",
     "references": [
-        "AttributeExt",
+        "AttributeExt2",
         "UnityExt",
         "XNode"
     ],
