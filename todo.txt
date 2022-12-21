@@ -1,0 +1,3 @@
+---navmesh component workflow te prefab e data baking er jonno je patch ta disilam oita github gist e deya
+		--Or entire package ta collect kore github e repo kore fork kore then sekhane patch kora
+				--may be integrate it into Neuron?
